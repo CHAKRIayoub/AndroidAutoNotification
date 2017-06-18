@@ -19,20 +19,64 @@ package com.example.user.androidautonotification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 public class MessageReadReceiver extends BroadcastReceiver {
     private static final String TAG = MessageReadReceiver.class.getSimpleName();
+    public static int n = 1;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-            int conversationId = intent.getIntExtra("conversation_id", -1);
-            if (conversationId != -1) {
-                Log.d(TAG, "Conversation " + conversationId + " was read");
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-                notificationManager.cancel(conversationId);
-            }
-        }
+
+        String titre = "";
+        String text = "";
+
+        //get data
+        Bundle bndl= intent.getExtras();
+        titre = bndl.getString("titre");
+        text = bndl.getString("text");
+
+
+
+
+
+
+
+        //send to auto
+        NotificationManagerCompat managernotf;
+        NotificationCompat.Builder notf = new NotificationCompat.Builder(context);
+        notf.setContentTitle(titre);
+        notf.setContentText(text);
+        notf.setSmallIcon(R.drawable.google);
+
+        int thisConversationId  = 42;
+
+        String conversationName = "Ministre of transport";
+        NotificationCompat.CarExtender.UnreadConversation.Builder unreadConvBuilder =
+                new NotificationCompat.CarExtender.UnreadConversation.Builder(conversationName)
+                        /*.setReadPendingIntent(msgReadPendingIntent)
+                        .setReplyAction(msgReplyPendingIntent, remoteInput)*/;
+
+        unreadConvBuilder.addMessage(titre+" : "+text)
+                .setLatestTimestamp(System.currentTimeMillis());
+
+        notf.extend(new android.support.v4.app.NotificationCompat.CarExtender()
+                .setUnreadConversation(unreadConvBuilder.build()));
+
+
+        managernotf = NotificationManagerCompat.from(context);
+        managernotf.notify(n,notf.build());
+        n++;
+
+
+
+
+
+
+
+    }
     }
 

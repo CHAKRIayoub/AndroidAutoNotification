@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.user.androidautonotification">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,18 +23,28 @@
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
-        <service android:name=".MyMessagingService"></service>
+        <service android:name=".MyMessagingService" />
 
-        <receiver android:name=".MessageReadReceiver" android:exported="false" >
+        <receiver
+            android:name=".MessageReadReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.example.user.androidautonotification.ACTION_MESSAGE_READ" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".MessageReplyReceiver" android:exported="false" >
+        <receiver
+            android:name=".MessageReplyReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.example.user.androidautonotification.ACTION_MESSAGE_REPLY" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".NotficationsService"
+            android:exported="false">
+
+        </service>
     </application>
 
 </manifest>
