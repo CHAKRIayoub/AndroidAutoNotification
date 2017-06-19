@@ -34,13 +34,13 @@ public class NotficationsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        DataBase MyDB = new DataBase( getApplicationContext() );
+        id = MyDB.get_last_id();
 
         while (servicefonctionne = true){
 
             Intent itnt = new Intent();
             itnt.setAction("com.example.user.androidautonotification.ACTION_MESSAGE_READ");
-
-
 
             //read service WEB
 
@@ -89,6 +89,7 @@ public class NotficationsService extends IntentService {
                             JSONObject jo = jsonarray.getJSONObject(count);
 
                             id = jo.getInt("id");
+                            MyDB.inset_id(id);
                             titre = jo.getString("titre");
                             text = jo.getString("text");
 
