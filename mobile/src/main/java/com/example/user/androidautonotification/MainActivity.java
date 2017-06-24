@@ -29,21 +29,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        //lancer le service qui nous permet de recevoir les notification
         NotficationsService.servicefonctionne = true;
         Intent itnt = new Intent(getApplicationContext(), NotficationsService.class);
         startService(itnt);
 
+
+        //MainActivity  :  une listeview pour afficher l'historique des notifications
         progressbar = (ProgressBar) findViewById(R.id.progressBar);
         lv = (ListView) findViewById(R.id.listview);
         ArrayList<NOtification> list = new ArrayList<NOtification>();
         CustomListAdapter cls = new CustomListAdapter( this,R.layout.lv_model ,list );
         lv.setAdapter(cls);
 
+        //lacer l' asyncTask qui nous permet de remplire la liste d'historique des Notification
         new ClassAsyncT(cls, list, progressbar).execute();
-
-
-
 
     }
 

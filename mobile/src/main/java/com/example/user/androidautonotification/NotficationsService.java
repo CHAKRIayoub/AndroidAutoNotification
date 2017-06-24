@@ -39,11 +39,11 @@ public class NotficationsService extends IntentService {
 
         while (servicefonctionne = true){
 
+            //preparer uun intent pour declecher le Broadcastreciever qui lance la notification
             Intent itnt = new Intent();
             itnt.setAction("com.example.user.androidautonotification.ACTION_MESSAGE_READ");
 
-            //read service WEB
-
+            //lire les données service WEB
 
             URL url = null;
             String JSON_STRING = "";
@@ -51,9 +51,10 @@ public class NotficationsService extends IntentService {
 
             try {
 
-                //connexion with web service____________________________________________________________________
+                //connexion avec le web service____________________________________________________________________
 
                 url = new URL("http://www.ayoubchakri.co.nf/notifications/getNotifications.php?id="+id);
+                // id : id de la derniére Notification reçu
 
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
@@ -79,6 +80,8 @@ public class NotficationsService extends IntentService {
 
                     if (data != null) {
 
+                        //recuperer les données JSON
+
                         JSONObject jsonobject = new JSONObject(data);
                         JSONArray jsonarray = jsonobject.getJSONArray("result");
                         String titre, text, date;
@@ -102,12 +105,10 @@ public class NotficationsService extends IntentService {
                                 itnt.putExtra("text", text);
                                 itnt.putExtra("date", date);
 
+                                //decleché le broadcast recievr
                                 sendBroadcast(itnt);
 
                             }
-
-
-
 
                             count++;
                         }
@@ -117,17 +118,11 @@ public class NotficationsService extends IntentService {
                 }
 
 
-
-
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
-
 
 
             try {
