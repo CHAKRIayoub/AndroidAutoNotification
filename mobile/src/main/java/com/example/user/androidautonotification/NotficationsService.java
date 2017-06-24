@@ -81,7 +81,7 @@ public class NotficationsService extends IntentService {
 
                         JSONObject jsonobject = new JSONObject(data);
                         JSONArray jsonarray = jsonobject.getJSONArray("result");
-                        String titre, text;
+                        String titre, text, date;
                         int count = 0;
 
                         while (count < jsonarray.length()) {
@@ -92,6 +92,7 @@ public class NotficationsService extends IntentService {
                             MyDB.inset_id(id);
                             titre = jo.getString("titre");
                             text = jo.getString("text");
+                            date = jo.getString("date");
 
 
                             //put extras données
@@ -99,6 +100,7 @@ public class NotficationsService extends IntentService {
 
                                 itnt.putExtra("titre", titre);
                                 itnt.putExtra("text", text);
+                                itnt.putExtra("date", date);
 
                                 sendBroadcast(itnt);
 
@@ -137,6 +139,5 @@ public class NotficationsService extends IntentService {
         }
 
     }
-
 
 }

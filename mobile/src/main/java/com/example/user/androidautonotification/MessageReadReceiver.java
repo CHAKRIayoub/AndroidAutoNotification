@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 public class MessageReadReceiver extends BroadcastReceiver {
     private static final String TAG = MessageReadReceiver.class.getSimpleName();
@@ -33,11 +32,13 @@ public class MessageReadReceiver extends BroadcastReceiver {
 
         String titre = "";
         String text = "";
+        String date = "";
 
         //get data
         Bundle bndl= intent.getExtras();
         titre = bndl.getString("titre");
         text = bndl.getString("text");
+        date = bndl.getString("date");
 
 
 
@@ -50,32 +51,26 @@ public class MessageReadReceiver extends BroadcastReceiver {
         NotificationCompat.Builder notf = new NotificationCompat.Builder(context);
         notf.setContentTitle(titre);
         notf.setContentText(text);
-        notf.setSmallIcon(R.drawable.google);
+        notf.setSmallIcon(R.drawable.cone );
 
         int thisConversationId  = 42;
 
-        String conversationName = "Ministre of transport";
+        String conversationName = titre;
         NotificationCompat.CarExtender.UnreadConversation.Builder unreadConvBuilder =
                 new NotificationCompat.CarExtender.UnreadConversation.Builder(conversationName)
                         /*.setReadPendingIntent(msgReadPendingIntent)
                         .setReplyAction(msgReplyPendingIntent, remoteInput)*/;
 
-        unreadConvBuilder.addMessage(titre+" : "+text)
+        unreadConvBuilder.addMessage( text + ", " +date)
                 .setLatestTimestamp(System.currentTimeMillis());
 
-        notf.extend(new android.support.v4.app.NotificationCompat.CarExtender()
+        notf.extend(new android.support.v7.app.NotificationCompat.CarExtender()
                 .setUnreadConversation(unreadConvBuilder.build()));
 
 
         managernotf = NotificationManagerCompat.from(context);
         managernotf.notify(n,notf.build());
         n++;
-
-
-
-
-
-
 
     }
     }
